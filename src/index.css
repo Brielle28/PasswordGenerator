@@ -13,16 +13,20 @@ input[type="range"].slider {
   input[type="range"].slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 24px; /* Adjust the size of the thumb */
-    height: 24px;
+    width: 20px; /* Adjust the size of the thumb */
+    height: 20px;
     border-radius: 50%; /* Make it round */
     background-color: white; /* Change the color of the thumb */
     cursor: pointer; /* Add a pointer cursor on hover */
   }
+
+  input[type="range"].slider::-webkit-slider-thumb:hover {
+    background-color: #A4FFAF; /* Color on hover */
+}
   
   input[type="range"].slider::-moz-range-thumb {
-    width: 24px; /* Adjust the size of the thumb for Firefox */
-    height: 24px;
+    width: 20px; /* Adjust the size of the thumb for Firefox */
+    height: 20px;
     border-radius: 50%;
     background-color: white; /* Change the color */
     cursor: pointer;

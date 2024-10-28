@@ -3,10 +3,11 @@ import "../index.css";
 import { MdArrowRightAlt } from "react-icons/md";
 
 export const PasswordGenerator = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0); // Character length slider value
+  const [password, setPassword] = useState(""); // Store the generated password
 
   const handleSliderChange = (e) => {
-    setValue(e.target.value);
+    setValue(Number(e.target.value)); // Update slider value as number
   };
 
   const [checkboxes, setCheckboxes] = useState({
@@ -21,19 +22,55 @@ export const PasswordGenerator = () => {
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
 
+  const generatePassword = () => {
+    const upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
+    const numberChars = "0123456789";
+    const symbolChars = "!@#$%^&*()_+[]{}|;:,.<>?";
+
+    // Build character set based on checkboxes
+    let charSet = "";
+    if (checkboxes.uppercase) charSet += upperCaseChars;
+    if (checkboxes.lowercase) charSet += lowerCaseChars;
+    if (checkboxes.numbers) charSet += numberChars;
+    if (checkboxes.symbols) charSet += symbolChars;
+
+    // Ensure at least one character type is selected
+    if (!charSet) {
+      alert("Please select at least one character type");
+      return;
+    }
+
+    // Generate password
+    let generatedPassword = "";
+    for (let i = 0; i < value; i++) {
+      const randomIndex = Math.floor(Math.random() * charSet.length);
+      generatedPassword += charSet[randomIndex];
+    }
+    setPassword(generatedPassword); // Update password state
+  };
+
   return (
     <div className="bg-[#100F15] h-screen flex flex-col items-center justify-center px-4 sm:px-8">
       <h1 className="text-[#817F8D] font-NotoSans font-bold mb-3">
         Password Generator
       </h1>
+
+      {/* Display generated password */}
       <div
         contentEditable="true"
         className="bg-[#24232B] w-full sm:w-[80%] md:w-[50%] lg:w-[26%] font-Oxanium outline-0 border-0 text-[20px] font-medium p-3 min-h-[40px] flex items-center pl-6"
       >
-        <h1 className="text-gray-500 opacity-50">P4$5W0rD!</h1>
+        <h1
+          className={`${
+            password ? "text-[#A4FFAF]" : "text-gray-500 opacity-50"
+          }`}
+        >
+          {password || "P4$5W0rD!"}
+        </h1>
       </div>
       <div className="w-full sm:w-[80%] md:w-[50%] lg:w-[26%] flex-col bg-[#24232B] px-6 py-6 mt-4 flex items-start justify-start font-IBMPlexMono">
-        {/* slider */}
+        {/* Slider */}
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex items-center justify-between w-full mb-7">
             <h1 className="text-[13px] text-white font-IBM Plex Mono">
@@ -49,10 +86,13 @@ export const PasswordGenerator = () => {
             max="30"
             value={value}
             onChange={handleSliderChange}
-            className="w-full h-1 bg-black appearance-none cursor-pointer slider"
+            className={`${
+              value > 0 ? "bg-[#A4FFAF]" : "bg-black"
+            } w-full h-1 appearance-none cursor-pointer slider hover:bg-[#A4FFAF]`}
           />
         </div>
-        {/* input field */}
+
+        {/* Checkbox Options */}
         <div className="w-full mt-10 ml-1">
           <div className="bg-[#24232B] w-full text-white">
             <div className="flex flex-col space-y-4">
@@ -63,11 +103,18 @@ export const PasswordGenerator = () => {
                   name="uppercase"
                   checked={checkboxes.uppercase}
                   onChange={handleCheckboxChange}
-                  className="w-4 h-4 bg-transparent border border-gray-400 rounded-sm appearance-none md:w-5 md:h-5 checked:border-white focus:outline-none"
+                  className="checkbox border-white outline-0 rounded-[3px] [--chkbg:#A4FFAF] [--chkfg:black] checked:border-green-500"
                 />
-                <span className="text-[12px] md:text-sm">Include Uppercase Letters</span>
+                <span
+                  className={`${
+                    checkboxes.uppercase === true
+                      ? "text-[#A4FFAF]"
+                      : "text-white"
+                  } text-[12px] md:text-sm`}
+                >
+                  Include Uppercase Letters
+                </span>
               </label>
-
               {/* Lowercase */}
               <label className="flex items-center space-x-3">
                 <input
@@ -75,11 +122,18 @@ export const PasswordGenerator = () => {
                   name="lowercase"
                   checked={checkboxes.lowercase}
                   onChange={handleCheckboxChange}
-                  className="w-4 h-4 bg-transparent border border-gray-400 rounded-sm appearance-none md:w-5 md:h-5 checked:bg-black checked:border-white focus:outline-none"
+                  className="checkbox border-white outline-0 rounded-[3px] [--chkbg:#A4FFAF] [--chkfg:black] checked:border-green-500"
                 />
-                <span className="text-[12px] md:text-sm">Include Lowercase Letters</span>
+                <span
+                  className={`${
+                    checkboxes.lowercase === true
+                      ? "text-[#A4FFAF]"
+                      : "text-white"
+                  } text-[12px] md:text-sm`}
+                >
+                  Include Lowercase Letters
+                </span>
               </label>
-
               {/* Numbers */}
               <label className="flex items-center space-x-3">
                 <input
@@ -87,11 +141,18 @@ export const PasswordGenerator = () => {
                   name="numbers"
                   checked={checkboxes.numbers}
                   onChange={handleCheckboxChange}
-                  className="w-4 h-4 bg-transparent border border-gray-400 rounded-sm appearance-none md:w-5 md:h-5 checked:bg-black checked:border-white focus:outline-none"
+                  className="checkbox border-white outline-0 rounded-[3px] [--chkbg:#A4FFAF] [--chkfg:black] checked:border-green-500"
                 />
-                <span className="text-[12px] md:text-sm">Include Numbers</span>
+                <span
+                  className={`${
+                    checkboxes.numbers === true
+                      ? "text-[#A4FFAF]"
+                      : "text-white"
+                  } text-[12px] md:text-sm`}
+                >
+                  Include Numbers
+                </span>
               </label>
-
               {/* Symbols */}
               <label className="flex items-center space-x-3">
                 <input
@@ -99,14 +160,23 @@ export const PasswordGenerator = () => {
                   name="symbols"
                   checked={checkboxes.symbols}
                   onChange={handleCheckboxChange}
-                  className="w-4 h-4 bg-transparent border border-gray-400 rounded-sm appearance-none md:w-5 md:h-5 checked:bg-black checked:border-white focus:outline-none"
+                  className="checkbox border-white outline-0 rounded-[3px] [--chkbg:#A4FFAF] [--chkfg:black] checked:border-green-500"
                 />
-                <span className="text-[12px] md:text-smm">Include Symbols</span>
+                <span
+                  className={`${
+                    checkboxes.symbols === true
+                      ? "text-[#A4FFAF]"
+                      : "text-white"
+                  } text-[12px] md:text-sm`}
+                >
+                  Include Symbols
+                </span>
               </label>
             </div>
           </div>
         </div>
-        {/* strength showcase */}
+
+        {/* Strength Showcase */}
         <div className="flex items-center justify-between w-full bg-[#18171F] mt-5 p-3">
           <h1 className="font-medium text-gray-200 font-IBMPlexMono">
             Strength
@@ -118,13 +188,15 @@ export const PasswordGenerator = () => {
             <div className="w-2 h-6 font-bold border-2 border-white font-IBMPlexMono" />
           </div>
         </div>
-        {/* generate button */}
-        <button className="mt-5 flex items-center justify-center gap-2 bg-transparent border-2 border-[#A4FFAF] w-full p-2">
-          <h1 className="font-bold font-IBMPlexMono text-[#A4FFAF]">
-            Generate
-          </h1>
+
+        {/* Generate Button */}
+        <button
+          onClick={generatePassword}
+          className="mt-5 flex items-center justify-center gap-2 bg-transparent border-2 border-[#A4FFAF] w-full p-2 text-[#A4FFAF] hover:bg-[#A4FFAF] hover:text-black"
+        >
+          <h1 className="font-bold font-IBMPlexMono">Generate</h1>
           <MdArrowRightAlt
-            className="font-bold font-IBMPlexMono text-[#A4FFAF] mt-1"
+            className="mt-1 font-bold font-IBMPlexMono"
             size={30}
           />
         </button>
