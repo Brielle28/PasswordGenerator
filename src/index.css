@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,33 +6,50 @@
 
 /* Style for the slider thumb */
 input[type="range"].slider {
-    -webkit-appearance: none; /* Remove default appearance */
-    appearance: none;
-  }
-  
-  input[type="range"].slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px; /* Adjust the size of the thumb */
-    height: 20px;
-    border-radius: 50%; /* Make it round */
-    background-color: white; /* Change the color of the thumb */
-    cursor: pointer; /* Add a pointer cursor on hover */
-  }
-
-  input[type="range"].slider::-webkit-slider-thumb:hover {
-    background-color: #A4FFAF; /* Color on hover */
+  -webkit-appearance: none; /* Remove default appearance */
+  appearance: none;
 }
-  
-  input[type="range"].slider::-moz-range-thumb {
-    width: 20px; /* Adjust the size of the thumb for Firefox */
-    height: 20px;
-    border-radius: 50%;
-    background-color: white; /* Change the color */
-    cursor: pointer;
+
+input[type="range"].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; /* Adjust the size of the thumb */
+  height: 20px;
+  border-radius: 50%; /* Make it round */
+  background-color: white; /* Change the color of the thumb */
+  cursor: pointer; /* Add a pointer cursor on hover */
+}
+
+input[type="range"].slider::-webkit-slider-thumb:hover {
+  background-color: #a4ffaf; /* Color on hover */
+}
+
+input[type="range"].slider::-moz-range-thumb {
+  width: 20px; /* Adjust the size of the thumb for Firefox */
+  height: 20px;
+  border-radius: 50%;
+  background-color: white; /* Change the color */
+  cursor: pointer;
+}
+
+input[type="range"].slider:focus {
+  outline: none; /* Remove focus outline */
+}
+
+/* SlideInLetter.css */
+
+.slide-in {
+  position: relative;
+  animation: slideIn 1s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
   }
-  
-  input[type="range"].slider:focus {
-    outline: none; /* Remove focus outline */
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
-  
+}

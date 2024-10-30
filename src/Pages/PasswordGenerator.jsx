@@ -5,49 +5,56 @@ import { MdArrowRightAlt } from "react-icons/md";
 export const PasswordGenerator = () => {
   const [value, setValue] = useState(0); // Character length slider value
   const [password, setPassword] = useState(""); // Store the generated password
-
-  const handleSliderChange = (e) => {
-    setValue(Number(e.target.value)); // Update slider value as number
-  };
-
+  const [copied, setCopied] = useState(false); // Tracks if the password was copied
   const [checkboxes, setCheckboxes] = useState({
     uppercase: false,
     lowercase: false,
     numbers: false,
     symbols: false,
   });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(password).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 4000); // Reset copied state
+    });
+  };
+
+  const handleSliderChange = (e) => {
+    setValue(Number(e.target.value)); // Update slider value as number
+  };
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setCheckboxes({ ...checkboxes, [name]: checked });
   };
-
   const generatePassword = () => {
     const upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
     const numberChars = "0123456789";
     const symbolChars = "!@#$%^&*()_+[]{}|;:,.<>?";
 
-    // Build character set based on checkboxes
     let charSet = "";
     if (checkboxes.uppercase) charSet += upperCaseChars;
     if (checkboxes.lowercase) charSet += lowerCaseChars;
     if (checkboxes.numbers) charSet += numberChars;
     if (checkboxes.symbols) charSet += symbolChars;
 
-    // Ensure at least one character type is selected
     if (!charSet) {
       alert("Please select at least one character type");
       return;
     }
+    if (value === 0) {
+      alert(" please choose how many characters that you want")
+    }
 
-    // Generate password
     let generatedPassword = "";
     for (let i = 0; i < value; i++) {
       const randomIndex = Math.floor(Math.random() * charSet.length);
       generatedPassword += charSet[randomIndex];
     }
-    setPassword(generatedPassword); // Update password state
+    setPassword(generatedPassword);
   };
 
   const getPasswordStrength = () => {
@@ -67,8 +74,10 @@ export const PasswordGenerator = () => {
 
       {/* Display generated password */}
       <div
-        contentEditable="true"
-        className="bg-[#24232B] w-full sm:w-[80%] md:w-[50%] lg:w-[26%] font-Oxanium outline-0 border-0 text-[20px] font-medium p-3 min-h-[40px] flex items-center pl-6"
+        onClick={handleCopy}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="flex flex-col items-start bg-[#24232B] w-full sm:w-[80%] md:w-[50%] lg:w-[26%] font-Oxanium outline-0 border-0 text-[20px] font-medium p-3 min-h-[60px] h-[50px] pl-6 cursor-pointer"
       >
         <h1
           className={`${
@@ -77,9 +86,14 @@ export const PasswordGenerator = () => {
         >
           {password || "P4$5W0rD!"}
         </h1>
+        { password && isHovered &&  
+          <div className="slide-in mr-auto text-[10px] text-gray-400">
+            {copied ? "Copied!" : "Click to copy"}
+          </div>
+        }
       </div>
+
       <div className="w-full sm:w-[80%] md:w-[50%] lg:w-[26%] flex-col bg-[#24232B] px-6 py-6 mt-4 flex items-start justify-start font-IBMPlexMono">
-        
         {/* Slider */}
         <div className="flex flex-col items-center justify-center w-full">
           <div className="flex items-center justify-between w-full mb-7">
@@ -100,38 +114,45 @@ export const PasswordGenerator = () => {
               value > 0 ? "bg-[#A4FFAF]" : "bg-black"
             } w-full h-1 appearance-none cursor-pointer slider hover:bg-[#A4FFAF]`}
           />
+          {value < 0 ? (
+            <p> please choose how many characters that you want </p>
+          ) : ""}
         </div>
 
         {/* Checkbox Options */}
         <div className="w-full mt-10 ml-1">
           <div className="bg-[#24232B] w-full text-white">
             <div className="flex flex-col space-y-4">
-              {["uppercase", "lowercase", "numbers", "symbols"].map((option) => (
-                <label key={option} className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    name={option}
-                    checked={checkboxes[option]}
-                    onChange={handleCheckboxChange}
-                    className="checkbox border-white outline-0 rounded-[3px] [--chkbg:#A4FFAF] [--chkfg:black] checked:border-green-500"
-                  />
-                  <span
-                    className={`${
-                      checkboxes[option] ? "text-[#A4FFAF]" : "text-white"
-                    } text-[12px] md:text-sm`}
-                  >
-                    Include {option.charAt(0).toUpperCase() + option.slice(1)}
-                  </span>
-                </label>
-              ))}
+              {["uppercase", "lowercase", "numbers", "symbols"].map(
+                (option) => (
+                  <label key={option} className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name={option}
+                      checked={checkboxes[option]}
+                      onChange={handleCheckboxChange}
+                      className="checkbox border-white outline-0 rounded-[3px] [--chkbg:#A4FFAF] [--chkfg:black] checked:border-green-500"
+                    />
+                    <span
+                      className={`${
+                        checkboxes[option] ? "text-[#A4FFAF]" : "text-white"
+                      } text-[12px] md:text-sm`}
+                    >
+                      Include {option.charAt(0).toUpperCase() + option.slice(1)}
+                    </span>
+                  </label>
+                )
+              )}
             </div>
           </div>
         </div>
 
         {/* Strength Showcase */}
         <div className="flex items-center justify-between w-full bg-[#18171F] mt-5 p-3">
-          <h1 className="font-medium text-gray-200 font-IBMPlexMono">Strength</h1>
-          <p className="font-medium text-[#A4FFAF] font-IBMPlexMono">
+          <h1 className="font-medium text-gray-200 font-IBMPlexMono">
+            Strength
+          </h1>
+          <p className="font-medium text-[#A4FFAF] font-IBMPlexMono text-[12px]">
             {getPasswordStrength()}
           </p>
           <div className="flex items-center justify-center gap-1">
