@@ -20,7 +20,10 @@ A customizable password generator application built with React, enabling users t
 This project is a password generator tool with a simple interface that allows users to set the length and select character types (uppercase, lowercase, numbers, symbols) for password generation. The tool also includes a password strength indicator based on selected criteria and an option to copy the generated password to the clipboard.
 
 ### Demo
-[Password_generator](https://password-generator-peach-tau.vercel.app/)
+
+https://github.com/user-attachments/assets/87069efd-84d6-4d02-aeb1-d9a8c61530ff
+
+you can also visit a live page @ [Password_generator](https://password-generator-peach-tau.vercel.app/)
 
 ### Built With
 
