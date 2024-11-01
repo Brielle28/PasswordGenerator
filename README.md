@@ -30,7 +30,7 @@ you can also visit a live page @ [Password_generator](https://password-generator
 - [React](https://reactjs.org/)
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [CSS Modules](https://github.com/css-modules/css-modules)
-- [Daisy ui]([https://github.com/css-modules/css-modules](https://daisyui.com/)
+- [Daisy ui]([https://github.com/css-modules/css-modules](https://daisyui.com/))
 
 ## Installation
 
